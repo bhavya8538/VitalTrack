@@ -29,13 +29,7 @@ export const PatientFormDefaultValues = {
 export const IdentificationTypes = [
   "Birth Certificate",
   "Driver's License",
-  "Medical Insurance Card/Policy",
-  "Military ID Card",
-  "National Identity Card",
   "Passport",
-  "Resident Alien Card (Green Card)",
-  "Social Security Card",
-  "State ID Card",
   "Student ID Card",
   "Voter ID Card",
 ];
@@ -43,39 +37,48 @@ export const IdentificationTypes = [
 export const Doctors = [
   {
     image: "/assets/images/dr-green.png",
-    name: "John Green",
+    name: " Siddhartha Mukherjee ",
+    password:"sid"
   },
   {
     image: "/assets/images/dr-cameron.png",
-    name: "Leila Cameron",
+    name: "Sudhansu Bhattacharyya",
+    password:"sud"
   },
   {
     image: "/assets/images/dr-livingston.png",
-    name: "David Livingston",
+    name: " Surbhi Anand – Endodontist",
+    password:"sur"
   },
   {
     image: "/assets/images/dr-peter.png",
-    name: "Evan Peter",
+    name: "Ashish Sabharwal- Urologist",
+    password:"ash"
   },
   {
     image: "/assets/images/dr-powell.png",
-    name: "Jane Powell",
+    name: "Sanjay Sachdeva – Otorhinolaryngologist",
+    password:"san"
   },
   {
     image: "/assets/images/dr-remirez.png",
-    name: "Alex Ramirez",
+    name: " Aditya Gupta – Neurosurgeon",
+    password:"adi"
   },
   {
     image: "/assets/images/dr-lee.png",
-    name: "Jasmine Lee",
+    name: "H. S. Chhabra – Endoscopic surgeon",
+    password:"hs"
   },
   {
     image: "/assets/images/dr-cruz.png",
-    name: "Alyana Cruz",
+    name: " Gaurav Kharya – Pediatrician",
+    password:"gau"
   },
   {
     image: "/assets/images/dr-sharma.png",
-    name: "Hardik Sharma",
+    name: " Hardik Sharma",
+    password:"har"
   },
 ];
 
@@ -84,3 +87,17 @@ export const StatusIcon = {
   pending: "/assets/icons/pending.svg",
   cancelled: "/assets/icons/cancelled.svg",
 };
+
+// types/index.ts or types.d.ts
+export type Appointment = {
+  $id: string;
+  patientName: string;
+  schedule: string;
+  status: "pending" | "scheduled" | "cancelled" | "completed";
+  primaryPhysician?: string;
+  cancellationReason?: string;
+  [key: string]: any;
+};
+
+export const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+export const PATIENTS_COLLECTION_ID = process.env.NEXT_PUBLIC_PATIENTS_COLLECTION_ID!;

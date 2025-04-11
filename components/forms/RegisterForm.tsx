@@ -1,3 +1,5 @@
+//region RegisterForm
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -84,6 +86,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           : undefined,
         privacyConsent: values.privacyConsent,
       };
+      console.log(patient);
 
       const newPatient = await registerPatient(patient);
 
@@ -119,7 +122,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             fieldType={FormFieldType.INPUT}
             control={form.control}
             name="name"
-            placeholder="John Doe"
+            placeholder="Bhavya Shah"
             iconSrc="/assets/icons/user.svg"
             iconAlt="user"
           />
@@ -131,7 +134,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="email"
               label="Email address"
-              placeholder="johndoe@gmail.com"
+              placeholder="bhavya@gmail.com"
               iconSrc="/assets/icons/email.svg"
               iconAlt="email"
             />
@@ -141,7 +144,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="phone"
               label="Phone Number"
-              placeholder="(555) 123-4567"
+              placeholder="+91 9999999999"
             />
           </div>
 
@@ -187,7 +190,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="address"
               label="Address"
-              placeholder="14 street, New york, NY - 5101"
+              placeholder="B/100 Ganesh,Ghatkopar,Mumbai-400001"
             />
 
             <CustomFormField
@@ -214,7 +217,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="emergencyContactNumber"
               label="Emergency contact number"
-              placeholder="(555) 123-4567"
+              placeholder="+91 9999999999"
             />
           </div>
         </section>
@@ -255,7 +258,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="insuranceProvider"
               label="Insurance provider"
-              placeholder="BlueCross BlueShield"
+              placeholder="XYZ Insurance"
             />
 
             <CustomFormField
@@ -274,7 +277,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="allergies"
               label="Allergies (if any)"
-              placeholder="Peanuts, Penicillin, Pollen"
+              placeholder="Peanuts"
             />
 
             <CustomFormField
@@ -282,7 +285,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="currentMedication"
               label="Current medications"
-              placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
+              placeholder="metsmall-500mg, 1 tablet daily"
             />
           </div>
 
@@ -293,7 +296,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="familyMedicalHistory"
               label=" Family medical history (if relevant)"
-              placeholder="Mother had brain cancer, Father has hypertension"
+              placeholder="Mother had diabetes, Father has hypertension"
             />
 
             <CustomFormField
@@ -301,7 +304,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="pastMedicalHistory"
               label="Past medical history"
-              placeholder="Appendectomy in 2015, Asthma diagnosis in childhood"
+              placeholder="Aortic surgery in 2015, Asthma diagnosis in childhood"
             />
           </div>
         </section>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Models } from "appwrite";
 
 import { StatCard } from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
@@ -9,19 +10,24 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 const AdminPage = async () => {
   const appointments = await getRecentAppointmentList();
 
+  // ✅ Filter out completed appointments
+  const visibleAppointments = appointments.documents.filter(
+    (appt) => appt.note?.toLowerCase() !== "completed"
+  );
+
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">
         <Link href="/" className="cursor-pointer">
           <Image
-            src="/assets/icons/logo-full.svg"
-            height={32}
-            width={162}
+            src="/assets/icons/logo-full3.png"
+            height={400}
+            width={1600}
             alt="logo"
-            className="h-8 w-fit"
+            className="mb-1 h-32 w-fit"
+            priority={true}
           />
         </Link>
-
         <p className="text-16-semibold">Admin Dashboard</p>
       </header>
 
@@ -54,7 +60,7 @@ const AdminPage = async () => {
           />
         </section>
 
-        <DataTable columns={columns} data={appointments.documents} />
+        <DataTable<Models.Document> columns={columns} data={visibleAppointments} />
       </main>
     </div>
   );

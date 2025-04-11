@@ -14,7 +14,7 @@ import {
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
-import { Appointment } from "@/types/appwrite.types";
+import { Appointment, Status } from "@/types/appwrite.types";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -43,11 +43,9 @@ export const AppointmentForm = ({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: appointment ? appointment?.primaryPhysician : "",
-      schedule: appointment
-        ? new Date(appointment?.schedule!)
-        : new Date(Date.now()),
-      reason: appointment ? appointment.reason : "",
+      primaryPhysician: appointment ? appointment.primaryPhysician : "",
+      schedule: appointment ? new Date(appointment.schedule) : new Date(),
+      reason: appointment?.reason || "",
       note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",
     },
@@ -58,31 +56,29 @@ export const AppointmentForm = ({
   ) => {
     setIsLoading(true);
 
-    let status;
+    let status: Status;
     switch (type) {
       case "schedule":
-        status = "scheduled";
+        status = "Scheduled";
         break;
       case "cancel":
-        status = "cancelled";
+        status = "Canceled";
         break;
       default:
-        status = "pending";
+        status = "Pending";
     }
 
     try {
       if (type === "create" && patientId) {
-        const appointment = {
+        const newAppointment = await createAppointment({
           userId,
           patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason!,
-          status: status as Status,
+          status,
           note: values.note,
-        };
-
-        const newAppointment = await createAppointment(appointment);
+        });
 
         if (newAppointment) {
           form.reset();
@@ -90,15 +86,20 @@ export const AppointmentForm = ({
             `/patients/${userId}/new-appointment/success?appointmentId=${newAppointment.$id}`
           );
         }
-      } else {
+      } else if (
+        appointment &&
+        appointment.$id &&
+        (type === "schedule" || type === "cancel")
+      ) {
         const appointmentToUpdate = {
           userId,
-          appointmentId: appointment?.$id!,
+          appointmentId: appointment.$id,
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
-            status: status as Status,
+            status,
             cancellationReason: values.cancellationReason,
+            note: values.note,
           },
           type,
         };
@@ -113,6 +114,7 @@ export const AppointmentForm = ({
     } catch (error) {
       console.log(error);
     }
+
     setIsLoading(false);
   };
 
@@ -125,7 +127,7 @@ export const AppointmentForm = ({
       buttonLabel = "Schedule Appointment";
       break;
     default:
-      buttonLabel = "Submit Apppointment";
+      buttonLabel = "Submit Appointment";
   }
 
   return (
@@ -174,15 +176,13 @@ export const AppointmentForm = ({
               dateFormat="MM/dd/yyyy  -  h:mm aa"
             />
 
-            <div
-              className={`flex flex-col gap-6  ${type === "create" && "xl:flex-row"}`}
-            >
+            <div className={`flex flex-col gap-6 ${type === "create" && "xl:flex-row"}`}>
               <CustomFormField
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="reason"
                 label="Appointment reason"
-                placeholder="Annual montly check-up"
+                placeholder="Annual monthly check-up"
                 disabled={type === "schedule"}
               />
 
@@ -210,7 +210,9 @@ export const AppointmentForm = ({
 
         <SubmitButton
           isLoading={isLoading}
-          className={`${type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"} w-full`}
+          className={`${
+            type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
+          } w-full`}
         >
           {buttonLabel}
         </SubmitButton>

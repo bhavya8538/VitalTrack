@@ -1,3 +1,4 @@
+//appointment submitted successfully
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,11 +23,13 @@ const RequestSuccess = async ({
       <div className="success-img">
         <Link href="/">
           <Image
-            src="/assets/icons/logo-full.svg"
+            src="/assets/icons/logo-full3.png"
             height={1000}
             width={1000}
             alt="logo"
-            className="h-10 w-fit"
+            className="mb-10 h-32 w-fit"
+
+
           />
         </Link>
 
@@ -73,7 +76,7 @@ const RequestSuccess = async ({
           </Link>
         </Button>
 
-        <p className="copyright">© 2024 CarePluse</p>
+        <p className="copyright">© 2025 VitalTrack</p>
       </div>
     </div>
   );

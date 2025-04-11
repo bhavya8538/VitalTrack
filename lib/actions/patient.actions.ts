@@ -110,3 +110,45 @@ export const getPatient = async (userId: string) => {
     );
   }
 };
+ // or however you're connecting
+
+ export const listPatients = async (p0: string | undefined) => {
+  try {
+    const res = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!
+    );
+    return res;
+  } catch (err) {
+    console.error("Failed to fetch patients:", err);
+    return null;
+  }
+};
+
+
+
+
+
+import { PATIENTS_COLLECTION_ID } from "@/constants/index";
+
+export async function getPatientById(patientId: string) {
+  if (!DATABASE_ID || !PATIENTS_COLLECTION_ID) {
+    throw new Error("Missing DATABASE_ID or PATIENTS_COLLECTION_ID");
+  }
+
+  try {
+    const patient = await databases.getDocument(
+      DATABASE_ID,
+      PATIENTS_COLLECTION_ID,
+      patientId
+    );
+    return patient;
+  } catch (error) {
+    console.error("Failed to fetch patient by ID:", error);
+    return null;
+  }
+}
+
+
+
+
